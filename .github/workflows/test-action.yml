@@ -35,18 +35,20 @@ jobs:
           name: job-report
           path: test-reports/job_report.md
 
-      - name: Run artifact creation and upload
-        run: ./
+      - name: Run store-env-artifacts action
+        id: store-env
+        uses: ./ # Uses an action in the root directory
+
         with:
-          artifact-dir: artifacts
-          app-name: MyApp
-          builder-image-version: 1.0.0
-          build-id: build_12345
-          builder-id: builder_67890
-          image-tag: latest
-          safe-basename: myapp-artifact
-          latest-tag: 1.next
-          job-type: test
+          artifact-dir: 'artifacts'
+          app-name: 'MyApp'
+          builder-image-version: '1.0.0'
+          build-id: 'build_12345'
+          builder-id: 'builder_67890'
+          image-tag: 'latest'
+          safe-basename: 'myapp-artifact'
+          latest-tag: '1.next'
+          job-type: 'test'
 
       - name: List artifacts directory contents
         run: ls artifacts
