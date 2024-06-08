@@ -1,0 +1,48 @@
+name: Test store-env-artifacts Action
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install @actions/core @actions/github
+
+      - name: Run store-env-artifacts action
+        id: store-env
+        uses: ./ # Uses an action in the root directory
+
+        with:
+          artifact-dir: 'artifacts'
+          app-name: 'MyApp'
+          builder-image-version: '1.0.0'
+          build-id: 'build_12345'
+          builder-id: 'builder_67890'
+          image-tag: 'latest'
+          safe-basename: 'myapp-artifact'
+          job-type: 'test'
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.store-env.outputs.artifact-name }}
+          path: artifacts
+
+      - name: Verify Artifacts
+        run: |
+          ls artifacts
+          cat artifacts/app_name.txt
+          cat artifacts/builder_image_version.txt
+          cat artifacts/build_id.txt
+          cat artifacts/builder_id.txt
+          cat artifacts/image_tag.txt
