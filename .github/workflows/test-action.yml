@@ -1,58 +1,86 @@
-name: Test store-env-artifacts Action
+name: Test Write Job Report Action
 
 on: [push, pull_request]
 
 jobs:
-  test:
+  test-write-job-report:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install @actions/core @actions/github
+        run: npm install
 
-      - name: Run store-env-artifacts action
-        id: store-env
-        uses: ./ # Uses an action in the root directory
-
+      - name: Run Write Job Report Action
+        id: write_job_report
+        uses: ./
         with:
-          artifact-dir: 'artifacts'
-          app-name: 'MyApp'
-          builder-image-version: '1.0.0'
-          build-id: 'build_12345'
-          builder-id: 'builder_67890'
-          image-tag: 'latest'
-          safe-basename: 'myapp-artifact'
-          latest-tag: '1.next'
-          job-type: 'test'
+          report-dir: 'test-reports'
+          report-file: 'job_report.md'
+          job-type: 'environment' # Can be changed to other job types for testing
 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+      - name: Display the generated report
+        run: cat test-reports/job_report.md
+
+      - name: Upload generated report as artifact
+        uses: actions/upload-artifact@v2
         with:
-          name: ${{ steps.store-env.outputs.artifact-name }}
-          path: artifacts
+          name: job-report
+          path: test-reports/job_report.md
 
-      - name: Show Files
-        run: ls -al artifacts
+      - name: Run artifact creation and upload
+        run: ./
+        with:
+          artifact-dir: artifacts
+          app-name: MyApp
+          builder-image-version: 1.0.0
+          build-id: build_12345
+          builder-id: builder_67890
+          image-tag: latest
+          safe-basename: myapp-artifact
+          latest-tag: 1.next
+          job-type: test
 
-      - name: Verify Artifacts
+      - name: List artifacts directory contents
+        run: ls artifacts
+
+      - name: Verify APP_NAME
         run: |
-          echo "Listing artifacts directory contents:"
-          ls artifacts
+          echo "Verifying APP_NAME:"
           echo "APP_NAME: $(cat artifacts/app_name.txt)"
+
+      - name: Verify BUILDER_IMAGE_VERSION
+        run: |
+          echo "Verifying BUILDER_IMAGE_VERSION:"
           echo "BUILDER_IMAGE_VERSION: $(cat artifacts/builder_image_version.txt)"
-          echo "\nContents of build_id.txt:\n"
+
+      - name: Verify build_id.txt
+        run: |
+          echo "Verifying build_id.txt:"
+          echo "Contents of build_id.txt:"
           cat artifacts/build_id.txt
-          echo "\nContents of builder_id.txt:\n"
+
+      - name: Verify builder_id.txt
+        run: |
+          echo "Verifying builder_id.txt:"
+          echo "Contents of builder_id.txt:"
           cat artifacts/builder_id.txt
-          echo "\nContents of image_tag.txt:\n"
+
+      - name: Verify image_tag.txt
+        run: |
+          echo "Verifying image_tag.txt:"
+          echo "Contents of image_tag.txt:"
           cat artifacts/image_tag.txt
-          echo "\nContents of latest_tag.txt:\n"
+
+      - name: Verify latest_tag.txt
+        run: |
+          echo "Verifying latest_tag.txt:"
+          echo "Contents of latest_tag.txt:"
           cat artifacts/latest_tag.txt
