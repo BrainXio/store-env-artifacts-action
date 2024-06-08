@@ -30,6 +30,7 @@ jobs:
           builder-id: 'builder_67890'
           image-tag: 'latest'
           safe-basename: 'myapp-artifact'
+          latest-tag: '1.next'
           job-type: 'test'
 
       - name: Upload Artifacts
