@@ -46,3 +46,4 @@ jobs:
           cat artifacts/build_id.txt
           cat artifacts/builder_id.txt
           cat artifacts/image_tag.txt
+          cat artifacts/latest_tag.txt
