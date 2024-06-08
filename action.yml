@@ -1,0 +1,31 @@
+name: 'store-env-artifacts'
+description: 'Store environment variables as artifacts and upload them'
+inputs:
+  artifact-dir:
+    description: 'The directory to store artifacts'
+    required: true
+  app-name:
+    description: 'The application name'
+    required: true
+  builder-image-version:
+    description: 'The builder image version'
+    required: true
+  build-id:
+    description: 'The build ID'
+    required: true
+  builder-id:
+    description: 'The builder ID'
+    required: true
+  image-tag:
+    description: 'The image tag'
+    required: true
+  safe-basename:
+    description: 'Safe base name for artifact'
+    required: true
+  job-type:
+    description: 'The job type'
+    required: true
+
+runs:
+  using: 'node12'
+  main: 'index.js'
