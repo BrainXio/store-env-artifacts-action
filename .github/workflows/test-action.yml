@@ -21,7 +21,6 @@ jobs:
       - name: Run store-env-artifacts action
         id: store-env
         uses: ./ # Uses an action in the root directory
-
         with:
           artifact-dir: 'artifacts'
           app-name: 'MyApp'
@@ -38,7 +37,6 @@ jobs:
         with:
           name: ${{ steps.store-env.outputs.artifact-name }}
           path: artifacts
-
 
       - name: List artifacts directory contents
         run: ls artifacts
