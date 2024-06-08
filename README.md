@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Store Environment Variables as Artifacts
-        uses: your-username/store-env-artifacts@v1
+        uses: brainxio/store-env-artifacts@v1
         with:
           artifact-dir: 'path/to/artifacts'
           app-name: ${{ env.APP_NAME }}
