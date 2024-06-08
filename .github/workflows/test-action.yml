@@ -33,7 +33,7 @@ jobs:
           job-type: 'test'
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.store-env.outputs.artifact-name }}
           path: artifacts
