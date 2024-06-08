@@ -25,6 +25,9 @@ inputs:
   job-type:
     description: 'The job type'
     required: true
+  latest-tag:
+    description: 'The latest tag'
+    required: true
 
 runs:
   using: 'node20'

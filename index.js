@@ -13,6 +13,7 @@ async function run() {
     const imageTag = core.getInput('image-tag');
     const safeBasename = core.getInput('safe-basename');
     const jobType = core.getInput('job-type');
+    const latestTag = core.getInput('latest-tag');
 
     // Create artifact directory
     if (!fs.existsSync(artifactDir)) {
@@ -25,6 +26,7 @@ async function run() {
     fs.writeFileSync(path.join(artifactDir, 'build_id.txt'), buildId);
     fs.writeFileSync(path.join(artifactDir, 'builder_id.txt'), builderId);
     fs.writeFileSync(path.join(artifactDir, 'image_tag.txt'), imageTag);
+    fs.writeFileSync(path.join(artifactDir, 'latest_tag.txt'), latestTag);
 
     // Set the artifact name for uploading
     const artifactName = `${safeBasename}-${builderImageVersion}-${jobType}`;
